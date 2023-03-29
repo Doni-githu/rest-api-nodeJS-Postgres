@@ -14,6 +14,17 @@ router.get('/data', async (req, res) => {
 })
 
 
+// Get data and his job
+router.get('/data/:id', async (req, res) => {
+    const id = req.params.id
+    const dataAndJob = await pool.query(`
+        SELECT * FROM employer LEFT JOIN job ON job.id = employer.job_id WHERE employer.id = $1
+    `, [id])
+
+    res.status(200).json(dataAndJob.rows[0])
+
+})
+
 // ADD data
 router.post('/data/add', async (req, res) => {
     try {
